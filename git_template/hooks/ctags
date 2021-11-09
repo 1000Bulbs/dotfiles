@@ -1,8 +1,16 @@
 #!/bin/sh
 
 set -e
+# arm64 or x86_64
+arch="$(uname -m)"
 
-PATH="/usr/local/bin:$PATH"
+if [ "$arch" = "arm64" ]; then
+  BREW="/opt/homebrew"
+else
+  BREW="/usr/local"
+fi
+
+PATH="$BREW/bin:$PATH"
 dir="$(git rev-parse --git-dir)"
 trap 'rm -f "$dir/$$.tags"' EXIT
 git ls-files | \

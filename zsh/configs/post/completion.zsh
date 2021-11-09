@@ -1,5 +1,12 @@
+# arm64 or x86_64
+arch="$(uname -m)"
+
 # load our own completion functions
-fpath=(~/.zsh/completion /usr/local/share/zsh/site-functions $fpath)
+if [ "$arch" = "arm64" ]; then
+  fpath=(~/.zsh/completion /opt/homebrew/share/zsh/site-functions $fpath)
+else
+  fpath=(~/.zsh/completion /usr/local/share/zsh/site-functions $fpath)
+fi
 
 # completion; use cache if updated within 24h
 autoload -Uz compinit
