@@ -26,6 +26,8 @@
   excludesfile = ~/.config/git/gitignore
   # keep LF endings; convert CRLF on commit
   autocrlf = input
+[commit]
+  template = ~/.gitmessage
 [fetch]
   # auto‑delete remote‑tracking refs that disappeared
   prune = true
