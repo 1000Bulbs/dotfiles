@@ -1,29 +1,37 @@
 # Ignore local files here without cluttering up .gitignore
 
+# macOS system files
+# ---------------------------------------------------------
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
 # --- Editor junk ---
+# ---------------------------------------------------------
 .idea/
+*.iml
 .vscode/
 .history
+*.swp
+*.swo
+*.sw?
 
-# --- Rails / Ruby ---
-coverage/
-byebug_history
-pry_history
-vendor/bundle/
-tmp/**/*.html
-.env
-.env.*
-
-# --- Node ---
-node_modules/
-yarn-debug.log*
-
-# --- DevOps / Infra ---
+# Ansible / Terraform / DevOps
+# ---------------------------------------------------------
 .terraform/
 terraform.tfstate*
-.ansible/
 *.retry
+.ansible/
+.kitchen/
+.vagrant/
+
+# Python virtualenv
+# ---------------------------------------------------------
 .venv/
 __pycache__/
 .python-version
+
+# AWS
+# ---------------------------------------------------------
 .aws/credentials

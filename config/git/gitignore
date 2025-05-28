@@ -1,3 +1,42 @@
+# Ruby & Rails
+# ---------------------------------------------------------
+# Bundler
+/vendor/bundle/
+.bundle/
+
+# Logs & PIDs
+log/*
+tmp/pids/*
+tmp/sockets/*
+!.keep
+
+# Cache & temp
+tmp/cache/*
+tmp/storage/*
+tmp/**/*.tmp
+/tmp/*.log
+coverage/
+byebug_history
+pry_history
+
+# dotenv secrets
+.env
+.env.*            # .env.development, .env.local, etc.
+
+# Node / Front‑End
+# ---------------------------------------------------------
+node_modules/
+yarn-debug.log*
+npm-debug.log*
+
+# Asset build artifacts
+# ---------------------------------------------------------
+public/assets/
+public/packs-
+public/packs-test-
+public/js/
+public/css/
+
 # Ignore every zsh‑compiled byte‑code file anywhere in the repo
 *.zwc
 
