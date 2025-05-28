@@ -1,0 +1,7 @@
+--color                          # always use colored output
+--format documentation           # human‑friendly nested descriptions
+--backtrace                      # show full backtrace on failures
+--fail-fast                      # stop after first failure (toggle with --no-fail-fast)
+--profile 10                     # show slowest 10 examples at the end
+--order random                   # randomize test order to surface order dependencies
+--seed 12345                     # deterministic seed when --order random is used
