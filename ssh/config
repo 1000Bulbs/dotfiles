@@ -1,0 +1,283 @@
+# Local config if it exists
+Include ~/.ssh/config.local
+
+Host *
+  AddKeysToAgent yes
+  ServerAliveInterval 120
+  SetEnv TERM=xterm-256color
+  TCPKeepAlive no
+  UseKeychain yes
+
+# Integration Servers
+# ------------------------------------------------
+
+Host integration-data
+  HostName 198.101.137.244
+  User deploy
+
+Host integration-es2
+  HostName 104.130.91.31
+  User deploy
+
+Host integration-es7-master
+  HostName 104.130.100.127
+  User deploy
+
+Host integration-es7-node1
+  HostName 50.56.40.60
+  User deploy
+
+Host integration-es7-node2
+  HostName 50.56.40.61
+  User deploy
+
+Host integration-mysql
+  HostName 161.47.83.255
+  User deploy
+
+Host integration-okb
+  HostName 104.239.217.56
+  User deploy
+
+Host integration-opensearch
+  HostName 104.130.91.30
+  User deploy
+
+Host integration-opensearch
+  HostName 162.242.178.240
+  User deploy
+
+Host integration-postgres
+  HostName 184.106.25.214
+  User deploy
+
+Host integration-strangler
+  HostName 50.57.18.230
+  User deploy
+
+# QA Servers
+# ------------------------------------------------
+
+Host qa-data
+  HostName 162.242.178.242
+  User deploy
+
+Host qa-es2
+  HostName 104.239.217.58
+  User deploy
+
+Host qa-es7-master
+  HostName 192.237.234.143
+  User deploy
+
+Host qa-es7-node1
+  HostName 162.242.178.241
+  User deploy
+
+Host qa-es7-node2
+  HostName 161.47.49.183
+  User deploy
+
+Host qa-mysql
+  HostName 50.56.40.62
+  User deploy
+
+Host qa-okb
+  HostName 50.57.2.153
+  User deploy
+
+Host qa-opensearch
+  HostName 50.57.18.229
+  User deploy
+
+Host qa-postgres
+  HostName 50.56.40.63
+  User deploy
+
+Host qa-strangler-01
+  HostName 50.57.2.155
+  User deploy
+
+Host qa-strangler-02
+  HostName 161.47.83.253
+  User deploy
+
+Host qa-strangler-03
+  HostName 161.47.83.254
+  User deploy
+
+Host qa-strangler-04
+  HostName 184.106.25.212
+  User deploy
+
+Host qa-strangler-05
+  HostName 184.106.25.213
+  User deploy
+
+# Staging Servers
+# ------------------------------------------------
+
+Host staging-data
+  HostName 104.130.91.24
+  User deploy
+
+Host staging-es2
+  HostName 198.101.137.245
+  User deploy
+
+Host staging-es7-master
+  HostName 166.78.86.190
+  User deploy
+
+Host staging-es7-node1
+  HostName 166.78.86.191
+  User deploy
+
+Host staging-es7-node2
+  HostName 192.237.128.156
+  User deploy
+
+Host staging-mysql
+  HostName 166.78.90.208
+  User deploy
+
+Host staging-okb
+  HostName 104.130.100.126
+  User deploy
+
+Host staging-postgres
+  HostName 166.78.90.209
+  User deploy
+
+Host staging-redis
+  HostName 161.47.49.181
+  User deploy
+
+Host staging-strangler-01
+  HostName 166.78.72.191
+  User deploy
+
+Host staging-strangler-02
+  HostName 192.237.128.157
+  User deploy
+
+Host staging-strangler-03
+  HostName 192.237.128.158
+  User deploy
+
+Host staging-strangler-04
+  HostName 192.237.128.159
+  User deploy
+
+Host staging-strangler-05
+  HostName 161.47.83.252
+  User deploy
+
+# Production Servers
+# ------------------------------------------------
+
+Host okb-01
+  HostName 184.106.19.104
+  User deploy
+
+Host okb-02
+  HostName 184.106.19.105
+  User deploy
+
+Host okb-03
+  HostName 184.106.19.106
+  User deploy
+
+Host okb-04
+  HostName 184.106.19.107
+  User deploy
+
+Host okb-05
+  HostName 184.106.19.108
+  User deploy
+
+Host okb-06
+  HostName 184.106.19.109
+  User deploy
+
+Host okb-07
+  HostName 184.106.19.110
+  User deploy
+
+Host okb-08
+  HostName 184.106.19.111
+  User deploy
+
+Host okb-09
+  HostName 184.106.25.208
+  User deploy
+
+Host okb-10
+  HostName 184.106.25.209
+  User deploy
+
+Host okb-admin
+  HostName 184.106.25.210
+  User deploy
+
+Host strangler-01
+  HostName 184.106.25.198
+  User deploy
+
+Host strangler-02
+  HostName 161.47.49.180
+  User deploy
+
+Host strangler-03
+  HostName 184.106.1.220
+  User deploy
+
+Host strangler-04
+  HostName 161.47.49.182
+  User deploy
+
+Host strangler-05
+  HostName 184.106.25.195
+  User deploy
+
+Host strangler-06
+  HostName 184.106.1.222
+  User deploy
+
+Host strangler-07
+  HostName 104.130.91.26
+  User deploy
+
+Host strangler-08
+  HostName 184.106.1.223
+  User deploy
+
+Host strangler-09
+  HostName 104.130.91.28
+  User deploy
+
+Host strangler-10
+  HostName 104.130.91.29
+  User deploy
+
+Host strangler-11
+  HostName 184.106.25.192
+  User deploy
+
+Host strangler-12
+  HostName 184.106.25.193
+  User deploy
+
+Host strangler-13
+  HostName 184.106.25.194
+  User deploy
+
+Host strangler-14
+  HostName 184.106.25.196
+  User deploy
+
+Host strangler-15
+  HostName 184.106.25.197
+  User deploy
+
+# vim: set filetype=sshconfig sw=2 sts=2 et:
