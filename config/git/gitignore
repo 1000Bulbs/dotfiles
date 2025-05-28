@@ -1,0 +1,4 @@
+# Ignore every zsh‑compiled byte‑code file anywhere in the repo
+*.zwc
+
+# vim: set filetype=gitignore sw=2 sts=2 et:
