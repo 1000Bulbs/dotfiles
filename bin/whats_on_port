@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+# whats_on_port — show the listener on a given TCP port (IPv4 or IPv6)
+#
+#   whats_on_port 3000
+#
+# Output:
+# COMMAND   PID USER   FD   TYPE DEVICE SIZE/OFF NODE NAME
+# ruby    25583 root  11u  IPv4 …       0t0     TCP *:3000 (LISTEN)
+
+set -euo pipefail
+
+die() {
+  printf '%s\n' "$*" >&2
+  exit 1
+}
+
+# Validate arguments                                                      #
+[[ $# -eq 1 ]] || die "Usage: whats_on_port <port-number>"
+
+PORT=$1
+
+# Numeric check
+[[ $PORT =~ ^[0-9]+$ ]] ||
+  die "Port must be a number"
+
+# Range check (1–65535)
+((PORT >= 1 && PORT <= 65535)) ||
+  die "Port out of range (1‑65535)"
+
+# Ensure lsof is installed                                                #
+command -v lsof >/dev/null 2>&1 ||
+  die "whats_on_port: requires 'lsof'"
+
+# Display the listener                                                    #
+# -nP          : skip DNS & service‑name look‑ups
+# -iTCP:$PORT  : match IPv4 *and* IPv6 sockets on that port
+# -sTCP:LISTEN : show listeners only (ignore established connections)
+lsof -nP -iTCP:"$PORT" -sTCP:LISTEN || exit $?
+
+# vim: set filetype=bash sw=2 sts=2 et:
