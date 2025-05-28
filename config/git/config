@@ -1,0 +1,42 @@
+[init]
+  # new repos start on 'master'
+  defaultBranch = master
+[push]
+  # 'git push' without args pushes current branch
+  default = current
+[pull]
+  # 'git pull' rebases by default (no merge bubbles)
+  rebase = true
+[color]
+  # enable colors when stdout is a TTY
+  ui = auto
+[alias]
+  # stage *all* changes (same as 'git add -A')
+  aa = add --all
+  # interactively stage hunks
+  ap = add --patch
+  # show remotes, newest first, colorized
+  branches = 'for-each-ref --sort=-committerdate --format="%(color:blue)%(authordate:relative)\t%(color:red)%(authorname)\t%(color:bold white)%(refname:short)" refs/remotes'
+  # shorter 'git checkout'
+  co = checkout
+  # shorter 'git status'
+  st = status
+[core]
+  # global ignore list
+  excludesfile = ~/.config/git/gitignore
+  # keep LF endings; convert CRLF on commit
+  autocrlf = input
+[fetch]
+  # auto‑delete remote‑tracking refs that disappeared
+  prune = true
+[rebase]
+  # honor 'fixup!/squash!' commits during 'git rebase -i'
+  autosquash = true
+[include]
+  # your personal git config settings
+  path = ~/.config/git/config.local
+[diff]
+  # colorful highlighting
+  colorMoved = zebra
+
+# vim: set filetype=gitconfig sw=2 sts=2 et:
