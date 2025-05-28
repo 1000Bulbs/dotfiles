@@ -1,0 +1,18 @@
+#compdef rg
+
+# ------------------------------------------------------------------
+# Simplified ripgrep completion
+#   • First positional arg  → files / directories
+#   • Subsequent args       → same
+#   • All option flags are handled by the upstream _ripgrep
+#     completion if it exists on $fpath.
+# ------------------------------------------------------------------
+
+# If this word begins with a dash, let the generic option completer
+# (from zsh‑completions or stock) take over.
+[[ $words[CURRENT] == -* ]] && _normal && return
+
+# Otherwise, complete filenames – including hidden files – relative to
+# the current directory. `_path_files` is better than `_files` because
+# it keeps relative paths tidy.
+_path_files
