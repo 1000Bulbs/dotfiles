@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# post-checkout hook shim
+# Looks for a user‑specific post-checkout hook under XDG config
+
+set -euo pipefail
+
+# Allow XDG override; fall back to ~/.config
+CFG_ROOT="${XDG_CONFIG_HOME:-$HOME/.config}"
+LOCAL_HOOK="$CFG_ROOT/git/git_template.local/hooks/post-checkout"
+
+if [[ -r $LOCAL_HOOK ]]; then
+  # shellcheck source=/dev/null
+  . "$LOCAL_HOOK" "$@"
+  exit $?
+fi
+
+exit 0

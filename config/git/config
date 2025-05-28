@@ -1,6 +1,8 @@
 [init]
   # new repos start on 'master'
   defaultBranch = master
+  # sets a custom template directory for git init and git clone --template
+  templatedir = ~/.config/git/git_template
 [push]
   # 'git push' without args pushes current branch
   default = current

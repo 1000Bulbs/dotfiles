@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# Commit‑msg hook shim
+# Looks for a user‑specific commit‑msg hook under XDG config
+
+set -euo pipefail
+
+# Allow XDG override; fall back to ~/.config
+CFG_ROOT="${XDG_CONFIG_HOME:-$HOME/.config}"
+LOCAL_HOOK="$CFG_ROOT/git/git_template.local/hooks/commit-msg"
+
+if [[ -r $LOCAL_HOOK ]]; then
+  # shellcheck source=/dev/null
+  . "$LOCAL_HOOK" "$@"
+  exit $?
+fi
+
+exit 0

@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+# prepare-commit-msg hook shim
+
+set -euo pipefail
+
+# Inserts TBDEV‑123 prefix if your branch is named like *TBDEV‑123‑feature*
+
+# Skip for merge / squash commits
+SOURCE=${2:-}
+case "$SOURCE" in
+merge | squash) exit 0 ;;
+esac
+
+# Insert Jira ticket prefix                                                   #
+MSG_FILE=$1
+
+# Current branch (quietly returns empty on detached HEAD)
+BRANCH=$(git symbolic-ref --quiet --short HEAD 2>/dev/null || true)
+
+# First ticket pattern like TBDEV-1234
+TICKET=$(printf '%s\n' "$BRANCH" |
+  grep -Eo '[A-Z][A-Z0-9]+-[0-9]+' |
+  head -n1)
+
+if [[ -n $TICKET ]] && ! grep -q "^$TICKET" "$MSG_FILE"; then
+  if sed --version >/dev/null 2>&1; then
+    # linux
+    SED=(-i)
+  else
+    # mac
+    SED=(-i '')
+  fi
+  # Prefix ticket + space at first line
+  sed "${SED[@]}" -e "1s|^|$TICKET |" "$MSG_FILE"
+fi
+
+# Looks for a user‑specific prepare-commit-msg hook under XDG config
+
+set -euo pipefail
+
+# Allow XDG override; fall back to ~/.config
+CFG_ROOT="${XDG_CONFIG_HOME:-$HOME/.config}"
+LOCAL_HOOK="$CFG_ROOT/git/git_template.local/hooks/prepare-commit-msg"
+
+if [[ -r $LOCAL_HOOK ]]; then
+  # shellcheck source=/dev/null
+  . "$LOCAL_HOOK" "$@"
+  exit $?
+fi
+
+exit 0

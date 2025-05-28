@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# If the rewrite was a rebase, run the post‑merge hook for any
+# after‑merge tasks (e.g., running tests, refreshing submodules).
+
+set -euo pipefail
+
+if [[ $1 == rebase ]]; then
+  HOOK=".git/hooks/post-merge"
+  if [[ -x $HOOK ]]; then
+    exec "$HOOK"
+  fi
+fi
+
+exit 0

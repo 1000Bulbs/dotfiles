@@ -1,0 +1,29 @@
+# Ignore local files here without cluttering up .gitignore
+
+# --- Editor junk ---
+.idea/
+.vscode/
+.history
+
+# --- Rails / Ruby ---
+coverage/
+byebug_history
+pry_history
+vendor/bundle/
+tmp/**/*.html
+.env
+.env.*
+
+# --- Node ---
+node_modules/
+yarn-debug.log*
+
+# --- DevOps / Infra ---
+.terraform/
+terraform.tfstate*
+.ansible/
+*.retry
+.venv/
+__pycache__/
+.python-version
+.aws/credentials
