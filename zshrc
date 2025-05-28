@@ -49,3 +49,14 @@ _load_settings $HOME/.zsh/configs
 
 # De‑duplicate PATH (zsh‑specific nicety)
 typeset -U path PATH
+
+# Aliases
+alias_dirs=( "$HOME"/.aliases )
+
+[[ -d $HOME/.aliases.local ]] && alias_dirs+=( "$HOME"/.aliases.local )
+
+for dir in "${alias_dirs[@]}"; do
+  for file in "$dir"/*.aliases(N-.); do
+    source "$file"
+  done
+done
