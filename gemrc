@@ -1,0 +1,23 @@
+# Core options
+# ---------------------------------------------------------
+:sources:
+  - https://rubygems.org           # primary gem source
+
+:backtrace: false                  # show a clean error by default
+:benchmark: false                  # skip install timing
+:update_sources: true              # keep sources list fresh
+:bulk_threshold: 1000              # performance tuning (leave default)
+
+# Default CLI flags
+# ---------------------------------------------------------
+
+# Disable RDoc & RI to speed up installs
+gem:     --no-document
+install: --no-document
+update:  --no-document
+
+# Plugin settings
+# ---------------------------------------------------------
+:plugins:
+  :sources:
+    enabled: true
