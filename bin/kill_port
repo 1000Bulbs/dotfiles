@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+# kill_port — terminate every process LISTENING on a TCP port (IPv4 or IPv6)
+#
+#   kill_port 3000
+#
+# The script first sends SIGTERM.  Any PID still alive after 2 s receives
+# SIGKILL.  Requires `lsof`.
+
+set -euo pipefail
+
+die() {
+  printf '%s\n' "$*" >&2
+  exit 1
+}
+
+# Validate arguments                                                      #
+[[ $# -eq 1 ]] || die "Usage: kill_port <port-number>"
+
+PORT=$1
+
+[[ $PORT =~ ^[0-9]+$ ]] || die "Port must be an integer"
+((PORT >= 1 && PORT <= 65535)) || die "Port out of range (1‑65535)"
+
+# Ensure lsof is available                                               #
+command -v lsof >/dev/null 2>&1 ||
+  die "kill_port: requires 'lsof'"
+
+# Identify listener PIDs                                                 #
+mapfile -t PIDS < <(lsof -nP -t -iTCP:"$PORT" -sTCP:LISTEN) || true
+((${#PIDS[@]})) || die "kill_port: nothing is listening on port $PORT"
+
+printf 'Killing PID(s) %s on port %s …\n' "${PIDS[*]}" "$PORT"
+
+# Graceful shutdown: SIGTERM                                             #
+kill "${PIDS[@]}" 2>/dev/null ||
+  die "kill_port: failed to send SIGTERM"
+
+# Wait 2 s, then escalate to SIGKILL if needed                           #
+sleep 2
+
+ALIVE=()
+for pid in "${PIDS[@]}"; do
+  if kill -0 "$pid" 2>/dev/null; then
+    ALIVE+=("$pid")
+  fi
+done
+
+if ((${#ALIVE[@]})); then
+  printf 'Escalating to SIGKILL for PID(s) %s …\n' "${ALIVE[*]}"
+  kill -9 "${ALIVE[@]}" 2>/dev/null ||
+    die "kill_port: failed to SIGKILL ${ALIVE[*]}"
+fi
+
+echo "Done!"
+# vim: set filetype=bash sw=2 sts=2 et:
