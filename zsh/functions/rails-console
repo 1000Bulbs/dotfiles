@@ -1,25 +1,25 @@
 # Usage:
-#   rails_console <ssh-host-alias> <rails-env>
+#   rails-console <ssh-host-alias> <rails-env>
 #
-#   rails_console strangler production   # production console on strangler
-#   rails_console strangler staging      # staging console on strangler
+#   rails-console strangler production   # production console on strangler
+#   rails-console strangler staging      # staging console on strangler
 #
 # Requires two arguments:
 #   $1 – SSH host alias (defined in ~/.ssh/config)
 #   $2 – Rails environment (production, staging, qa, etc.)
 
-rails_console() {
+rails-console() {
   local host=$1 env=$2
 
   # Ensure both arguments are provided
   if [[ -z $host || -z $env ]]; then
-    print -u2 "rails_console: usage: rails_console <ssh-host> <rails-env>"
+    print -u2 "rails-console: usage: rails-console <ssh-host> <rails-env>"
     return 1
   fi
 
   # Verify host is reachable (optional, quick noop command)
   if ! ssh -q "$host" exit 2>/dev/null; then
-    print -u2 "rails_console: unknown or unreachable SSH host '$host'"
+    print -u2 "rails-console: unknown or unreachable SSH host '$host'"
     return 1
   fi
 
@@ -28,3 +28,5 @@ rails_console() {
     cd /var/apps/strangler/current &&
     exec bin/rails console -e '"$env"''
 }
+
+# vim: set filetype=zsh sw=2 sts=2 et:

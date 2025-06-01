@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# whats_on_port — show the listener on a given TCP port (IPv4 or IPv6)
+# whats-on-port — show the listener on a given TCP port (IPv4 or IPv6)
 #
-#   whats_on_port 3000
+#   whats-on-port 3000
 #
 # Output:
 # COMMAND   PID USER   FD   TYPE DEVICE SIZE/OFF NODE NAME
@@ -15,7 +15,7 @@ die() {
 }
 
 # Validate arguments                                                      #
-[[ $# -eq 1 ]] || die "Usage: whats_on_port <port-number>"
+[[ $# -eq 1 ]] || die "Usage: whats-on-port <port-number>"
 
 PORT=$1
 
@@ -29,7 +29,7 @@ PORT=$1
 
 # Ensure lsof is installed                                                #
 command -v lsof >/dev/null 2>&1 ||
-  die "whats_on_port: requires 'lsof'"
+  die "whats-on-port: requires 'lsof'"
 
 # Display the listener                                                    #
 # -nP          : skip DNS & service‑name look‑ups

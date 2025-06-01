@@ -1,0 +1,16 @@
+# Usage: change-extension OLD NEW
+# e.g., change-extension yml yaml
+change-extension() {
+  local old=$1 new=$2 f
+
+  if [[ -z $old || -z $new ]]; then
+    print -u2 "Usage: change-extension OLD_EXT NEW_EXT"
+    return 1
+  fi
+
+  for f in **/*.$old(N.); do
+    mv -- "$f" "${f%.$old}.$new"
+  done
+}
+
+# vim: set filetype=zsh sw=2 sts=2 et:
