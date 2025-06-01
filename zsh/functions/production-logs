@@ -1,0 +1,33 @@
+# production-logs - Stream production logs from multiple servers in parallel
+#
+# This function connects to a configurable range of "strangler" servers via SSH,
+# tails the production log file on each, and prefixes each line with a colored
+# [hostname] label for clarity.
+#
+# Requirements:
+# - SSH access to hosts defined in ~/.ssh/config as strangler-01 through strangler-15
+# - SSH config should define the deploy user for strangler-* hosts, e.g.:
+#     Host strangler-*
+#       User deploy
+#       IdentityFile ~/.ssh/id_rsa
+#
+# Usage:
+#   production-logs           # Tails logs from strangler-01 to strangler-15
+#   production-logs 3 8       # Tails logs from strangler-03 to strangler-08
+
+production-logs() {
+  local LOG_PATH="/var/apps/strangler/current/log/production.log"
+  local START="${1:-1}"
+  local END="${2:-15}"
+  local HOSTS=()
+
+  for i in $(seq "$START" "$END"); do
+    HOSTS+=("strangler-$(printf '%02d' "$i")")
+  done
+
+  # Use awk to prefix each line with a colored [hostname] tag
+  printf "%s\n" "${HOSTS[@]}" | xargs -I {} -P 5 ssh {} \
+    "tail -f $LOG_PATH | awk '{printf \"\033[33m[%s]\033[0m %s\\n\", \"{}\", \$0}'"
+}
+
+# vim: filetype=zsh ts=2 sw=2 sts=2 et
