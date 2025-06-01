@@ -83,6 +83,7 @@ This dotfiles repo sets up and configures:
 
 Located in the bin/ directory, these include:
 
+- git-change-branch: change branches more efficiently
 - kill-port: kill processes bound to a port
 - whats-on-port: check which process is using a port
 
