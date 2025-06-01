@@ -16,5 +16,4 @@ if command -v asdf &>/dev/null; then
 
   # Prepend completions dir to fpath (unique array avoids duplicates)
   fpath=("$COMPLETIONS_DIR" $fpath)
-  typeset -U fpath
 fi

@@ -47,9 +47,6 @@ _load_settings $HOME/.zsh/configs
 # Local config
 [[ -f $HOME/.zshrc.local ]] && source $HOME/.zshrc.local
 
-# De‑duplicate PATH (zsh‑specific nicety)
-typeset -U path PATH
-
 # Aliases
 alias_dirs=( "$HOME"/.aliases )
 

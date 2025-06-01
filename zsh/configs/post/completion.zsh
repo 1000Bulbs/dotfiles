@@ -7,9 +7,6 @@ esac
 # Prepend custom completion dir + brew site‑functions
 fpath=(~/.zsh/completion $BREW_PREFIX/share/zsh/site-functions $fpath)
 
-# Ensure duplicates are removed (zsh‑specific array uniqueness)
-typeset -gU fpath
-
 # Initialize compinit, but rebuild the dump file only when >24 h old        #
 autoload -Uz compinit
 ZCD=$HOME/.zcompdump

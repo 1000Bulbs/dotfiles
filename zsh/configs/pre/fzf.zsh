@@ -4,7 +4,6 @@ if command -v fzf &>/dev/null; then
 
   # Completion — put dir on $fpath; compinit (later) will pick it up
   [[ -r $FZF_HOME/completion.zsh ]] && fpath=($FZF_HOME $fpath)
-  typeset -gU fpath # de‑duplicate
 
   # Key‑bindings — must be sourced now
   [[ -r $FZF_HOME/key-bindings.zsh ]] && source $FZF_HOME/key-bindings.zsh
