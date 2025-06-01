@@ -1,0 +1,64 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+SSH_DIR="$HOME/.ssh"
+KEY_FILE="$SSH_DIR/id_ed25519.pub"
+PRIVATE_KEY="$SSH_DIR/id_ed25519"
+
+# If the public key doesn't exist, create one
+if [[ ! -f "$KEY_FILE" ]]; then
+  echo "No SSH key found. Let's create one."
+
+  # Prompt for email until user enters something non-empty
+  while [[ -z "${EMAIL:-}" ]]; do
+    read -rp "Enter your @1000bulbs.com email to generate your SSH key: " EMAIL
+  done
+
+  mkdir -p "$SSH_DIR"
+  chmod 700 "$SSH_DIR"
+
+  # Generate the key quietly
+  ssh-keygen -q -t ed25519 -C "$EMAIL" -f "$PRIVATE_KEY" -N ""
+
+  # Secure private keys
+  find "$SSH_DIR" -type f \( -name "id_*" ! -name "*.pub" \) -exec chmod 600 {} \;
+
+  # Optionally make public keys readable by others
+  find "$SSH_DIR" -type f -name "*.pub" -exec chmod 644 {} \;
+
+  # Fix ownership (macOS safe)
+  if command -v chown >/dev/null; then
+    chown -R "$USER" "$SSH_DIR"
+  fi
+
+  echo "✅ SSH key created successfully!"
+  echo "📍 Public key path: $KEY_FILE"
+  echo
+  echo "🔑 Here is your public key — copy this to GitHub, GitLab, etc:"
+  echo "------------------------------------------------------------"
+  cat "$KEY_FILE"
+  echo "------------------------------------------------------------"
+
+  # Optional: Upload key to GitHub if gh CLI is installed
+  if command -v gh >/dev/null; then
+    echo
+    echo "👉 Now that you've seen your key, we can upload it to GitHub for you."
+    read -rp "Do you want to upload this SSH key to GitHub now? [y/N] " ANSWER
+    if [[ "$ANSWER" =~ ^[Yy]$ ]]; then
+      gh auth status >/dev/null 2>&1 || gh auth login
+      gh ssh-key add "$KEY_FILE" --title "$(hostname) - $(date +%Y-%m-%d)"
+      echo "🚀 SSH key uploaded to GitHub."
+    fi
+  fi
+fi
+
+# Add SSH key to macOS keychain (if available)
+if command -v ssh-add >/dev/null; then
+  ssh-add --apple-use-keychain "$PRIVATE_KEY" 2>/dev/null || true
+fi
+
+# Local config
+[[ -f ~/.hooks/post-up.local ]] && source ~/.hooks/post-up.local
+
+# vim: filetype=bash ts=2 sw=2 sts=2 et
