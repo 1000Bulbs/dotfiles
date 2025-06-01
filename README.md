@@ -49,6 +49,7 @@ extension
 - `~/dotfiles-local/aliases.local/*.aliases`
 - `~/dotfiles-local/config/git/git_template.local/*`
 - `~/dotfiles-local/config/git/config.local`
+- `~/dotfiles-local/hooks/post-up.local`
 - `~/dotfiles-local/zshrc.local`
 
 These files will be automatically sourced during setup.
