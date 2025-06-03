@@ -1,24 +1,9 @@
 # Enable advanced globbing
 setopt extendedglob
 
-# Function autoloading
 if [[ -d $HOME/.zsh/functions ]]; then
-  # Prepend to fpath so zsh can locate your functions
-  fpath=($HOME/.zsh/functions $fpath)
-
-  # collect all plain (no-extension) files
-  funcs=( $HOME/.zsh/functions/*~*.zwc~*.*(N-.) )
-
-  if (( ${#funcs[@]} )); then
-    # compile each one; this produces foo.zwc next to foo
-    for f in "${funcs[@]}"; do
-      zcompile "$f"
-    done
-  fi
-
-  # Register each function for on‑demand loading
-  for func_file in $HOME/.zsh/functions/*~*.zwc~*.*(N-.); do
-    autoload -Uz "${func_file:t}"
+  for function in "$HOME"/.zsh/functions/*; do
+    source "$function"
   done
 fi
 
