@@ -1,0 +1,46 @@
+# -----------------------------------------------------------------------------
+# trust-all-ssh-hosts
+#
+# This Zsh function scans your ~/.ssh/config file for all explicitly defined
+# SSH hosts (excluding wildcards like '*') and attempts to SSH into each one.
+#
+# Purpose:
+#   - Automatically accept and trust host keys (useful for new machines)
+#   - Prevent manual prompts like:
+#     "The authenticity of host ... can't be established... Are you sure?"
+#
+# How it works:
+#   - Uses `ssh -o StrictHostKeyChecking=accept-new` to auto-accept host keys
+#   - Ignores unreachable hosts or ones already trusted
+#   - Exits immediately after connecting (no hanging sessions)
+#
+# Usage:
+#   Run: `trust-all-ssh-hosts`
+#
+# Warning:
+#   This bypasses manual key verification. Only use it for trusted hosts
+#   (e.g., your own servers, dev/test machines, etc.)
+# -----------------------------------------------------------------------------
+trust-all-ssh-hosts() {
+  local ssh_config="$HOME/.ssh/config"
+  local hosts=()
+
+  # Parse Host entries from the config (ignore wildcards and comments)
+  while read -r line; do
+    [[ "$line" == Host\ * ]] || continue
+    for h in ${(s: :)${line#Host }}; do
+      [[ "$h" == "*" || "$h" == "?"* ]] && continue  # skip wildcards
+      hosts+="$h"
+    done
+  done < "$ssh_config"
+
+  echo "Found ${#hosts[@]} hosts in $ssh_config"
+  echo ""
+
+  for host in "${hosts[@]}"; do
+    echo "Trusting host: $host"
+    ssh -o StrictHostKeyChecking=accept-new -o ConnectTimeout=5 "$host" exit || echo "  Skipped: $host"
+  done
+}
+
+# vim: filetype=zsh ts=2 sw=2 sts=2 et
