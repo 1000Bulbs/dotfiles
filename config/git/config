@@ -29,7 +29,7 @@
   # keep LF endings; convert CRLF on commit
   autocrlf = input
 [commit]
-  template = ~/.gitmessage
+  template = ~/.config/git/gitmessage
 [fetch]
   # auto‑delete remote‑tracking refs that disappeared
   prune = true
