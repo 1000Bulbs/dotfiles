@@ -1,0 +1,18 @@
+# Usage:
+#   production-rails-console
+#
+# Launches a Rails console on the strangler-01 host in the production environment.
+# This is a shortcut wrapper around the more general `rails-console` function.
+#
+# Example:
+#   production-rails-console          # connects to strangler-01 and runs production console
+#
+# Prerequisites:
+# - Ensure 'rails-console' is defined and sourced in your shell session.
+# - Ensure 'strangler-01' is a valid SSH host alias in your ~/.ssh/config.
+
+production-rails-console() {
+  rails-console strangler-01 production
+}
+
+# vim: set filetype=zsh sw=2 sts=2 et:

@@ -7,6 +7,8 @@
 # Requires two arguments:
 #   $1 – SSH host alias (defined in ~/.ssh/config)
 #   $2 – Rails environment (production, staging, qa, etc.)
+#
+# Always connects as the 'deploy' user.
 
 rails-console() {
   local host=$1 env=$2
@@ -17,14 +19,17 @@ rails-console() {
     return 1
   fi
 
+  # Prefix host with 'deploy@' if not already specified
+  local ssh_host="deploy@$host"
+
   # Verify host is reachable (optional, quick noop command)
-  if ! ssh -q "$host" exit 2>/dev/null; then
+  if ! ssh -q "$ssh_host" exit 2>/dev/null; then
     print -u2 "rails-console: unknown or unreachable SSH host '$host'"
     return 1
   fi
 
   # Launch remote Rails console in the specified environment
-  ssh "$host" -t '
+  ssh "$ssh_host" -t '
     cd /var/apps/strangler/current &&
     exec bin/rails console -e '"$env"''
 }

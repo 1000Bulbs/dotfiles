@@ -1,0 +1,18 @@
+# Usage:
+#   staging-rails-console
+#
+# Launches a Rails console on the staging-strangler-01 host in the staging environment.
+# This is a shortcut wrapper around the more general `rails-console` function.
+#
+# Example:
+#   staging-rails-console          # connects to staging-strangler-01 and runs staging console
+#
+# Prerequisites:
+# - Ensure 'rails-console' is defined and sourced in your shell session.
+# - Ensure 'staging-strangler-01' is a valid SSH host alias in your ~/.ssh/config.
+
+staging-rails-console() {
+  rails-console staging-strangler-01 staging
+}
+
+# vim: set filetype=zsh sw=2 sts=2 et:
