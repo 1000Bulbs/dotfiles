@@ -1,2 +1,2 @@
 DOTFILES_DIRS="$HOME/dotfiles-local $HOME/dotfiles"
-EXCLUDES="*.md *.gitkeep *.zwc"
+EXCLUDES="*.md *.gitkeep *.zwc docs"
