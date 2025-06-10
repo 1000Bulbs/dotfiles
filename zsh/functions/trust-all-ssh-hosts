@@ -23,23 +23,75 @@
 # -----------------------------------------------------------------------------
 trust-all-ssh-hosts() {
   local ssh_config="$HOME/.ssh/config"
-  local hosts=()
+  typeset -A host_map
+  local ordered_hosts=()
+  local current_hosts=()
 
-  # Parse Host entries from the config (ignore wildcards and comments)
-  while read -r line; do
-    [[ "$line" == Host\ * ]] || continue
-    for h in ${(s: :)${line#Host }}; do
-      [[ "$h" == "*" || "$h" == "?"* ]] && continue  # skip wildcards
-      hosts+="$h"
-    done
+  if [[ ! -f "$ssh_config" ]]; then
+    echo "No SSH config found at $ssh_config"
+    return 1
+  fi
+
+  # Parse ~/.ssh/config
+  while IFS= read -r line || [[ -n "$line" ]]; do
+    line="${line#"${line%%[![:space:]]*}"}"
+    [[ "$line" == \#* || -z "$line" ]] && continue
+
+    if [[ "$line" == Host\ * ]]; then
+      current_hosts=()
+      for h in ${(s: :)${line#Host }}; do
+        [[ "$h" == "*" || "$h" == "?"* ]] && continue
+        h="${h//[\"\']}"
+        current_hosts+="$h"
+        ordered_hosts+="$h"
+      done
+    elif [[ "$line" == HostName\ * ]]; then
+      hn="${line#HostName }"
+      hn="${hn//[\"\']}"
+      for h in "${current_hosts[@]}"; do
+        host_map[$h]="$hn"
+      done
+    fi
   done < "$ssh_config"
 
-  echo "Found ${#hosts[@]} hosts in $ssh_config"
+  # Default HostName fallback
+  for h in $ordered_hosts; do
+    [[ -z "${host_map[$h]}" ]] && host_map[$h]="$h"
+  done
+
+  echo "Found ${#ordered_hosts[@]} hosts in $ssh_config"
   echo ""
 
-  for host in "${hosts[@]}"; do
-    echo "Trusting host: $host"
-    ssh -o StrictHostKeyChecking=accept-new -o ConnectTimeout=5 "$host" exit || echo "  Skipped: $host"
+  for raw_host in $ordered_hosts; do
+    clean_host="${raw_host//[\"\']}"
+    ip="${host_map[$raw_host]}"
+    [[ -z "$ip" ]] && continue
+
+    echo "Checking host: $clean_host ($ip)..."
+
+    if nc -G 2 -z "$ip" 22 &>/dev/null; then
+      echo "  Trusting host: $clean_host"
+
+      ssh_output=$(ssh \
+        -o BatchMode=yes \
+        -o StrictHostKeyChecking=accept-new \
+        -o ConnectTimeout=5 \
+        $clean_host exit 2>&1
+      )
+      ssh_status=$?
+
+      if echo "$ssh_output" | grep -q "Permission denied"; then
+        echo "    🚫 Skipped: $clean_host (Permission denied)"
+      elif echo "$ssh_output" | grep -q "Host key verification failed"; then
+        echo "    🚫 Skipped: $clean_host (Host key verification failed)"
+      elif [[ $ssh_status -eq 0 ]]; then
+        echo "    ✅ Trusted: $clean_host"
+      else
+        echo "    ⚠️ Skipped: $clean_host (SSH failed)"
+      fi
+    else
+      echo "    🚫 Skipped: $clean_host (port 22 not reachable)"
+    fi
   done
 }
 
