@@ -54,6 +54,10 @@ extension
 
 These files will be automatically sourced during setup.
 
+### Oh My Zsh
+
+Want to use Oh My Zsh? See [docs/oh-my-zsh.md](./docs/oh-my-zsh.md) for instructions on how to safely install Oh My Zsh without overwriting your existing dotfiles-managed .zshrc file.
+
 ## What This Sets Up
 
 This dotfiles repo sets up and configures:
